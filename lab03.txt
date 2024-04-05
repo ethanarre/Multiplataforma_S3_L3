@@ -1,0 +1,90 @@
+CURSO: MULTIPLATAFORMA 
+LABORATORIO 03
+ALUMNO: ETHAN ARREDONDO
+
+-----EJERCICIO 01------
+class Usuario {
+  String nombre; String email; String contrasenia;
+  Usuario(this.nombre, this.email, this.contrasenia);
+  String getNombre() {return nombre;}
+  String getEmail() {return email;}
+  String getContrasenia() {return contrasenia;}
+}
+mixin Autenticacion {
+  iniciarSesion(Usuario usuario, String email, String contrasenia) {
+    if (usuario.getEmail() == email && usuario.getContrasenia() == contrasenia) {
+      print('Sesión iniciada para: $email');
+      return true;
+    } else {
+      print('Error: Credenciales incorrectas');
+      return false;
+    }
+  }
+}
+class UsuarioAutenticado extends Usuario with Autenticacion {
+  UsuarioAutenticado(String nombre, String email, String contrasenia)
+      : super(nombre, email, contrasenia);
+}
+void main() {
+  var usuarioAutenticado = UsuarioAutenticado('Ethan', 'ethan.arredondo@tecsup.edu.pe', '123456');
+  usuarioAutenticado.iniciarSesion(usuarioAutenticado, 'ethan.arredondo@tecsup.edu.pe', '123456');
+}
+
+-----EJERCICIO 02------
+import 'dart:math';
+class Calculadora {
+  double suma(double a, double b) => a + b;
+  double resta(double a, double b) => a - b;
+  double multiplicacion(double a, double b) => a * b;
+  double division(double a, double b) => a / b;
+}
+mixin OperacionesAdicionales {
+  num potencia(double base, double exponente) => pow(base, exponente);
+}
+mixin OperacionesAvanzadas {
+  double raizCuadrada(double numero) => sqrt(numero);
+}
+class CalculadoraAvanzada extends Calculadora with OperacionesAdicionales, OperacionesAvanzadas {}
+void main() {
+  var calculadoraAvanzada = CalculadoraAvanzada();
+  print('Suma: ${calculadoraAvanzada.suma(10, 5)}');
+  print('Resta: ${calculadoraAvanzada.resta(20, 15)}');
+  print('Multiplicación: ${calculadoraAvanzada.multiplicacion(7, 8)}');
+  print('División: ${calculadoraAvanzada.division(51, 17)}');
+  print('Potencia: ${calculadoraAvanzada.potencia(5, 3)}');
+  print('Raíz Cuadrada: ${calculadoraAvanzada.raizCuadrada(121)}');
+}
+
+-----EJERCICIO 03------
+class Empleado {
+  String nombre;
+  String apellido;
+  double salario;
+  int horasTrabajadas;
+  Empleado(this.nombre, this.apellido, this.salario, this.horasTrabajadas);
+}
+mixin Bonificaciones {
+  double calcularBonificacion(int horasTrabajadas, double salario) {
+    if (horasTrabajadas >= 40) {
+      return salario * 0.15; 
+    } else {
+      return salario * 0;
+    }
+  }
+}
+class EmpleadoConBonificaciones extends Empleado with Bonificaciones {
+  EmpleadoConBonificaciones(String nombre, String apellido, double salario, int horasTrabajadas)
+      : super(nombre, apellido, salario, horasTrabajadas);
+}
+void main() {
+  var empleados = [
+    EmpleadoConBonificaciones('Ethan', 'Arredondo', 1200, 40),
+    EmpleadoConBonificaciones('Josue', 'Jimenez', 800, 35),
+    EmpleadoConBonificaciones('Jimena', 'Agustin', 1500, 45),
+  ];
+  for (var empleado in empleados) {
+    var bonificacion = empleado.calcularBonificacion(empleado.horasTrabajadas, empleado.salario);
+    print('Empleado: ${empleado.nombre} ${empleado.apellido}, Bonificación: \$${bonificacion.toStringAsFixed(2)}');
+  }
+}
+
